@@ -98,8 +98,8 @@ class MultipleLinearRegression:
 
     def hypothesis_test(self, alpha=0.05):
         # Calculate prediction and residuals
-        y_pred = self.predict(self.X)
-        residuals = self.y - y_pred
+        y_pred = self.y_pred
+        residuals = self.residuals
         
         # Mean square error
         df_res = self.n_sample - self.n_features - 1
