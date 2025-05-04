@@ -97,25 +97,21 @@ class MultipleLinearRegression:
         return anova_results
 
     def hypothesis_test(self, alpha=0.05):
-        # Calculate prediction and residuals
-        y_pred = self.y_pred
-        residuals = self.residuals
         
         # Mean square error
-        df_res = self.n_sample - self.n_features - 1
-        sse = self.sse
         mse = self.mse
         
         # (XᵗX)^-1
         XtX_inv = np.linalg.inv(self.X.T @ self.X)
         
         # All coefficients (intercept + slopes)
-        beta = np.concatenate(([self.intercept], self.coefficients))
+        beta = self.beta
         
         # Standard errors of coefficients
         se = np.sqrt(np.diagonal(mse * XtX_inv))
         
         # t-statistics and p-values
+        df_res = self.n_sample - self.n_features - 1
         t_stats = beta / se
         p_values = [2 * (1 - stats.t.cdf(np.abs(t), df=df_res)) for t in t_stats]
 
@@ -134,25 +130,23 @@ class MultipleLinearRegression:
         return test_results
 
     def interval_estimation(self, alpha=0.05):
-        # Predict yproject.ipynb
-        y_pred = self.predict(self.X)
-        residuals = self.y - y_pred
+     
+        residuals = self.residuals
         
         # Calculate Mean Squared Error (MSE)
-        df_res = self.n_sample - self.n_features - 1
-        sse = np.sum(residuals ** 2)
-        mse = sse / df_res
+        mse = self.mse
         
         # Inverse of X^T * X
         XtX_inv = np.linalg.inv(self.X.T @ self.X)
         
         # Get all coefficients
-        beta = np.concatenate(([self.intercept], self.coefficients))
+        beta = self.beta
         
         # Standard errors of coefficients
         se = np.sqrt(np.diagonal(mse * XtX_inv))
         
         # t-statistic critical value for alpha
+        df_res = self.n_sample - self.n_features - 1
         t_critical = stats.t.ppf(1 - alpha / 2, df_res)
         
         # Confidence intervals
@@ -188,8 +182,7 @@ class MultipleLinearRegression:
         xx, yy = np.meshgrid(x_range, y_range)
 
         # Regression coefficients (intercept + beta values)
-        beta = np.concatenate(([self.intercept], self.coefficients))
-
+        beta = self.beta
         # Compute the Z values (regression plane) using the linear equation
         zz = beta[0] + beta[1] * xx + beta[2] * yy  # B0 + B1*x + B2*y
 
