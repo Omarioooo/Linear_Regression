@@ -10,6 +10,7 @@ class MultipleLinearRegression:
         self.intercept = None
         self.X = None
         self.y = None
+        self.beta = None
         self.y_pred = None
         self.n_features = None
         self.n_sample = None
@@ -30,8 +31,9 @@ class MultipleLinearRegression:
         self.X = np.c_[np.ones(self.n_sample), self.X]
         
         # Calculate coefficients using normal equation
-        beta = np.linalg.pinv(self.X.T @ self.X) @ self.X.T @ self.y
+        self.beta = np.linalg.pinv(self.X.T @ self.X) @ self.X.T @ self.y
         
+        beta = self.beta
         self.intercept = beta[0]  # B0
         self.coefficients = beta[1:]  # B1, B2, B3, ....
         
