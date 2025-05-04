@@ -145,7 +145,7 @@ class MultipleLinearRegression:
         
         # t-statistic critical value for alpha
         df_res = self.n_sample - self.n_features - 1
-        t_critical = stats.t.ppf(1 - alpha / 2, df_res)
+        t_critical = stats.t.ppf(alpha / 2, df_res)
         
         # Confidence intervals
         confidence_intervals = []
