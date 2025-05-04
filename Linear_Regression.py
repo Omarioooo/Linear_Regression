@@ -131,8 +131,6 @@ class MultipleLinearRegression:
 
     def interval_estimation(self, alpha=0.05):
      
-        residuals = self.residuals
-        
         # Calculate Mean Squared Error (MSE)
         mse = self.mse
         
