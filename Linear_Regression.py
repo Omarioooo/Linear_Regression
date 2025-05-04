@@ -103,8 +103,8 @@ class MultipleLinearRegression:
         
         # Mean square error
         df_res = self.n_sample - self.n_features - 1
-        sse = np.sum(residuals ** 2)
-        mse = sse / df_res
+        sse = self.sse
+        mse = self.mse
         
         # (XᵗX)^-1
         XtX_inv = np.linalg.inv(self.X.T @ self.X)
