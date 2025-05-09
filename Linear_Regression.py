@@ -42,14 +42,14 @@ class MultipleLinearRegression:
         
         # Calculate statistics
         y_bar = np.mean(self.y)
-        self.sst = sum((self.y - y_bar) ** 2)
-        self.sse = np.sum(self.residuals ** 2)
+        self.sst = (self.y.T @ self.y) - self.n_sample * (y_bar ** 2)
+        self.sse = (self.y.T @ self.y) - self.beta.T @ self.X.T @ self.y
         self.ssr = self.sst - self.sse
         
         df = self.n_sample - self.n_features - 1
         self.mse = self.sse / df
         
-        df_res = self.n_sample - self.n_features - 1
+        df_res = self.n_features
         self.msr = self.ssr / df_res
         
         
@@ -136,7 +136,7 @@ class MultipleLinearRegression:
         mse = self.mse
         
         # Inverse of X^T * X
-        XtX_inv = np.linalg.inv(self.X.T @ self.X)
+        XtX_inv = np.linalg.pinv(self.X.T @ self.X)
         
         # Get all coefficients
         beta = self.beta
@@ -146,7 +146,7 @@ class MultipleLinearRegression:
         
         # t-statistic critical value for alpha
         df_res = self.n_sample - self.n_features - 1
-        t_critical = stats.t.ppf(alpha / 2, df_res)
+        t_critical = stats.t.ppf(1 - alpha / 2, df_res)
         
         # Confidence intervals
         confidence_intervals = []
