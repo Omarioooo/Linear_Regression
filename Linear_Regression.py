@@ -65,7 +65,7 @@ class MultipleLinearRegression:
         beta = np.concatenate(([self.intercept], self.coefficients))
         return X @ beta
 
-    def anova(self):
+    def anova(self, alpha= 0.5):
         # Sum of squares
         sst = self.sst
         sse = self.sse
@@ -83,6 +83,8 @@ class MultipleLinearRegression:
         # F_statistic (F0)
         f_stat = msr / mse
         
+        f_crit = stats.f.ppf(1 - alpha, df_reg, df_res)
+        
         anova_results = {
             "SST": sst,
             "SSR": ssr,
@@ -92,7 +94,9 @@ class MultipleLinearRegression:
             "DF_residual": df_res,
             "MSR": msr,
             "MSE": mse,
-            "F_statistic": f_stat
+            "F_statistic": f_stat,
+            "F_Critical" : f_crit,
+            "Reject H0" : f_stat > f_crit
         }
         
         return anova_results
@@ -130,7 +134,7 @@ class MultipleLinearRegression:
         
         return test_results
 
-    def interval_estimation(self, alpha=0.05):
+    def interval_estimation(self, alpha=None):
      
         # Calculate Mean Squared Error (MSE)
         mse = self.mse
