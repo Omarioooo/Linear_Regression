@@ -134,7 +134,7 @@ class MultipleLinearRegression:
         
         return test_results
 
-    def interval_estimation(self, alpha=.01):
+    def interval_estimation(self, alpha=0.05):
      
         # Calculate Mean Squared Error (MSE)
         mse = self.mse
